@@ -55,6 +55,13 @@ class LinkedList
     false
   end
 
+  def find(val)
+    return nil if size.eql?(0)
+
+    traverse { |node, index| return index if node.val.eql? val }
+    nil
+  end
+
   def to_s
     return 'nil' if size.eql?(0)
 
