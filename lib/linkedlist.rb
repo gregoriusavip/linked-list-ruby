@@ -11,8 +11,7 @@ class LinkedList
 
   def append(val)
     if size.eql?(0)
-      self.head = Node.new(val)
-      self.tail = head
+      create_head(val)
     else
       tail.next = Node.new(val)
       self.tail = tail.next
@@ -20,7 +19,16 @@ class LinkedList
     self.size += 1
   end
 
-  def prepend(val); end
+  def prepend(val)
+    if size.eql?(0)
+      create_head(val)
+    else
+      temp = Node.new(val)
+      temp.next = head
+      self.head = temp
+    end
+    self.size += 1
+  end
 
   def to_s
     return 'nil' if size.eql?(0)
@@ -42,6 +50,11 @@ class LinkedList
   attr_reader :size, :head, :tail
 
   private
+
+  def create_head(val)
+    self.head = Node.new(val)
+    self.tail = head
+  end
 
   attr_writer :size, :head, :tail
 end
