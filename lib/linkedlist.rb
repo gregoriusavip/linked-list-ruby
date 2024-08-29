@@ -54,6 +54,18 @@ class LinkedList
     last_node
   end
 
+  def contains?(val)
+    return false if size.eql?(0)
+
+    node = head
+    until node.nil?
+      return true if node.val.eql? val
+
+      node = node.next
+    end
+    false
+  end
+
   def to_s
     return 'nil' if size.eql?(0)
 
