@@ -33,13 +33,7 @@ class LinkedList
   def at(index)
     return nil if index > size - 1
 
-    counter = 0
-    node = head
-    until counter.eql? index
-      counter += 1
-      node = node.next
-    end
-    node
+    traverse { |node, counter| return node if counter.eql? index }
   end
 
   def pop
@@ -57,24 +51,15 @@ class LinkedList
   def contains?(val)
     return false if size.eql?(0)
 
-    node = head
-    until node.nil?
-      return true if node.val.eql? val
-
-      node = node.next
-    end
+    traverse { |node| return true if node.val.eql? val }
     false
   end
 
   def to_s
     return 'nil' if size.eql?(0)
 
-    node = head
     list_to_s = ''
-    until node.nil?
-      list_to_s += "( #{node.val} ) -> "
-      node = node.next
-    end
+    traverse { |node| list_to_s += "( #{node.val} ) -> " }
     "#{list_to_s}nil"
   end
 
@@ -96,6 +81,15 @@ class LinkedList
     self.head = self.tail = nil
     self.size -= 1
     last_node
+  end
+
+  def traverse(node = head)
+    index = 0
+    until node.nil?
+      yield(node, index)
+      node = node.next
+      index += 1
+    end
   end
 
   attr_writer :size, :head, :tail
