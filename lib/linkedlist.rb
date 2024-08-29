@@ -30,8 +30,20 @@ class LinkedList
     self.size += 1
   end
 
+  def at(index)
+    return 'nil' if index > size - 1
+
+    counter = 0
+    node = head
+    until counter.eql? index
+      counter += 1
+      node = node.next
+    end
+    node
+  end
+
   def to_s
-    return 'nil' if size.eql?(0)
+    return nil if size.eql?(0)
 
     cur_node = head
     list_to_s = ''
