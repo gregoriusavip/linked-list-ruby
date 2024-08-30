@@ -78,7 +78,24 @@ class LinkedList
     return extend(index - last_index - 1, val) if index > last_index
     return prepend(val) if index.zero?
 
-    insert_at_helper(val, index)
+    node_pair_at(index) do |prev_node, cur_node|
+      self.size += 1
+      prev_node.next = Node.new(val)
+      prev_node.next.next = cur_node
+      prev_node.next
+    end
+  end
+
+  def remove_at(index)
+    return nil if index > last_index || index.negative?
+    return remove_size_one if size.eql?(1)
+    return pop if index.eql?(last_index)
+
+    node_pair_at(index) do |prev_node, cur_node|
+      self.size -= 1
+      prev_node.next = cur_node.next
+      cur_node
+    end
   end
 
   attr_reader :size, :head, :tail
@@ -115,15 +132,12 @@ class LinkedList
     append(val)
   end
 
-  def insert_at_helper(val, index)
+  def node_pair_at(index)
     prev_node = nil
-    traverse do |node, counter|
-      if counter.eql?(index)
-        self.size += 1
-        prev_node.next = Node.new(val)
-        return prev_node.next.next = node
-      end
-      prev_node = node
+    traverse do |cur_node, counter|
+      return yield(prev_node, cur_node) if counter.eql?(index)
+
+      prev_node = cur_node
     end
   end
 
