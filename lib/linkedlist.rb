@@ -31,7 +31,7 @@ class LinkedList
   end
 
   def at(index)
-    return nil if index > size - 1
+    return nil if index > last_index
 
     traverse { |node, counter| return node if counter.eql? index }
   end
@@ -40,7 +40,7 @@ class LinkedList
     return nil if size.eql?(0)
     return remove_size_one if size.eql?(1)
 
-    self.tail = at(size - 2)
+    self.tail = at(last_index - 1)
     last_node = tail.next
     tail.next = nil
     self.size -= 1
