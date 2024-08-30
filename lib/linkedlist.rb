@@ -38,7 +38,6 @@ class LinkedList
 
   def pop
     return nil if size.eql?(0)
-
     return remove_size_one if size.eql?(1)
 
     self.tail = at(size - 2)
@@ -74,6 +73,14 @@ class LinkedList
     to_s
   end
 
+  def insert_at(val, index)
+    return nil if index.negative?
+    return extend(index - last_index - 1, val) if index > last_index
+    return prepend(val) if index.zero?
+
+    insert_at_helper(val, index)
+  end
+
   attr_reader :size, :head, :tail
 
   private
@@ -96,6 +103,27 @@ class LinkedList
       yield(node, index)
       node = node.next
       index += 1
+    end
+  end
+
+  def last_index
+    size - 1
+  end
+
+  def extend(num, val)
+    num.times { append(nil) }
+    append(val)
+  end
+
+  def insert_at_helper(val, index)
+    prev_node = nil
+    traverse do |node, counter|
+      if counter.eql?(index)
+        self.size += 1
+        prev_node.next = Node.new(val)
+        return prev_node.next.next = node
+      end
+      prev_node = node
     end
   end
 
